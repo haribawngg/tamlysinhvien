@@ -62,4 +62,4 @@ Sau đó, hãy truy cập vào địa chỉ: [http://127.0.0.1:8000](http://127.
 Kết quả từ bài trắc nghiệm này được đưa ra bởi thuật toán Trí tuệ nhân tạo và các thang đo sàng lọc tâm lý, chỉ mang tính chất **tham khảo và tầm soát sớm**. Kết quả này **KHÔNG thay thế** cho việc chẩn đoán y khoa chuyên nghiệp hoặc tư vấn từ các bác sĩ và chuyên gia tâm lý có chuyên môn. Nếu bạn cảm thấy cần sự giúp đỡ, hãy liên hệ với các trung tâm y tế gần nhất.
 
 ---
-*Phát triển bởi USER & Antigravity AI* 🚀
+*Phát triển bởi haribawngg* 🚀
