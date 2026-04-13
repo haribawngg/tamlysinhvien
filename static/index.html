@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html class="dark" lang="vi">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>tamlysinhvien - Trắc nghiệm Sức khỏe Tâm thần</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    <script id="tailwind-config">
+          tailwind.config = {
+            darkMode: "class",
+            theme: {
+              extend: {
+                "colors": {
+                        "primary": "#296868",
+                        "tertiary": "#306678",
+                },
+                "fontFamily": {
+                        "manrope": ["Manrope", "sans-serif"]
+                }
+              },
+            },
+          }
+    </script>
+    <style>
+        body { font-family: 'Manrope', sans-serif; }
+        .glass-card {
+            background: rgba(11, 15, 15, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        /* Loader */
+        .loader-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(11, 15, 15, 0.9); backdrop-filter: blur(10px);
+            z-index: 1000; display: flex; flex-direction: column;
+            justify-content: center; align-items: center; opacity: 0;
+            pointer-events: none; transition: opacity 0.3s;
+        }
+        .loader-overlay.active { opacity: 1; pointer-events: all; }
+        .spinner {
+            width: 50px; height: 50px; border: 5px solid rgba(45, 164, 164, 0.3);
+            border-radius: 50%; border-top-color: #2da4a4;
+            animation: spin 1s infinite linear; margin-bottom: 20px;
+        }
+        @keyframes spin { 100% { transform: rotate(360deg); } }
+        
+        .hide { display: none !important; }
+    </style>
+</head>
+<body class="bg-slate-950 text-slate-200 selection:bg-teal-500/30">
+
+    <!-- TopNavBar -->
+    <header class="flex justify-between items-center px-8 py-4 w-full sticky top-0 z-50 bg-slate-900/80 backdrop-blur-md shadow-sm border-b border-slate-800 relative">
+        <div class="text-2xl font-extrabold tracking-tight text-teal-400 flex items-center gap-2">
+            <span class="material-symbols-outlined">psychology</span> tamlysinhvien
+        </div>
+        <nav class="hidden md:flex gap-8 items-center font-manrope text-sm font-medium absolute left-1/2 -translate-x-1/2" id="top-nav">
+            <a class="nav-item text-teal-300 font-bold border-b-2 border-teal-600 transition-colors" id="nav-1">1. Lối sống</a>
+            <a class="nav-item text-slate-400 transition-colors" id="nav-2">2. Trầm cảm (PHQ-9)</a>
+            <a class="nav-item text-slate-400 transition-colors" id="nav-3">3. Lo âu (GAD-7)</a>
+        </nav>
+    </header>
+
+    <main class="min-h-screen relative overflow-hidden flex flex-col items-center pt-8 pb-24 px-4">
+        <!-- Abstract Background Shape -->
+        <div class="absolute top-0 -left-24 w-96 h-96 bg-teal-500/10 rounded-full blur-[120px] pointer-events-none"></div>
+        <div class="absolute bottom-0 -right-24 w-96 h-96 bg-sky-500/10 rounded-full blur-[120px] pointer-events-none"></div>
+
+        <!-- PHASE WELCOME (LANDING PAGE) -->
+        <div id="phase-welcome" class="w-full max-w-3xl flex flex-col items-center gap-8 py-10">
+            <div class="glass-card rounded-3xl p-8 md:p-12 shadow-2xl relative text-center w-full">
+                <div class="inline-flex rounded-full p-4 mb-6 bg-teal-900/30 text-teal-400">
+                    <span class="material-symbols-outlined text-5xl">auto_awesome</span>
+                </div>
+                
+                <h1 class="text-3xl md:text-5xl font-extrabold text-teal-50 tracking-tight mb-6">
+                    Chào mừng bạn đến với bài <span class="text-teal-400 italic">Trắc nghiệm Tâm lý</span> dành cho sinh viên đại học
+                </h1>
+
+
+
+                <div class="space-y-6 mb-10">
+                    <div class="bg-teal-950/20 border-l-4 border-teal-500 p-6 rounded-r-2xl text-left">
+                        <p class="text-slate-200 leading-relaxed font-medium">
+                            <strong>Chào mừng bạn!</strong> Bài trắc nghiệm này được thiết kế và huấn luyện dựa trên bộ dữ liệu thực tế nhằm giúp sinh viên đại học khám phá những khía cạnh khác nhau trong suy nghĩ, cảm xúc và hành vi của mình.
+                        </p>
+                    </div>
+
+                    <div class="bg-red-950/20 border-l-4 border-red-500/50 p-6 rounded-r-2xl text-left">
+                        <p class="text-slate-400 text-sm leading-relaxed italic">
+                            <strong>Lưu ý quan trọng:</strong> Kết quả của bài trắc nghiệm dựa trên mô hình trí tuệ nhân tạo và thang đo tiêu chuẩn chỉ mang tính chất tham khảo, tầm soát sớm. Kết quả này <strong>không thay thế</strong> cho việc chẩn đoán y khoa chuyên nghiệp hoặc tư vấn từ các chuyên gia tâm lý có chuyên môn.
+                        </p>
+                    </div>
+                </div>
+
+                <button type="button" onclick="startSurvey()" class="bg-teal-600 hover:bg-teal-500 text-white px-10 py-4 rounded-2xl font-bold text-lg flex items-center gap-3 transition-all hover:scale-105 shadow-xl shadow-teal-900/40 mx-auto group">
+                    <span>Bắt đầu làm bài</span>
+                    <span class="material-symbols-outlined group-hover:translate-x-1 transition-transform">play_arrow</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- PHASE WIZARD (LIFESTYLE & PHQ-9 & GAD-7) -->
+        <div id="phase-wizard" class="w-full hidden flex-col items-center gap-4">
+            <!-- Progress Tracking -->
+            <div class="w-full max-w-3xl mb-8 flex flex-col items-center gap-4">
+                <div class="flex items-center gap-3 w-full">
+                    <div class="h-1 flex-1 bg-slate-800 rounded-full overflow-hidden">
+                        <div id="wizard-progress" class="h-full bg-teal-500 shadow-[0_0_12px_rgba(45,164,164,0.4)] transition-all duration-300" style="width: 5%"></div>
+                    </div>
+                    <span id="wizard-counter" class="text-xs font-bold tracking-widest uppercase text-teal-400">Câu 1/29</span>
+                </div>
+                <h1 id="wizard-title" class="text-3xl md:text-5xl font-extrabold text-teal-50 tracking-tight text-center">Thói quen <span class="italic text-teal-400">Sinh hoạt</span></h1>
+                <p id="wizard-sub" class="text-slate-400 text-sm md:text-base max-w-xl text-center leading-relaxed">Đánh giá các thói quen cơ bản hàng ngày của bạn để cung cấp dữ liệu nền cho hệ thống AI.</p>
+            </div>
+
+            <div class="w-full max-w-3xl glass-card rounded-3xl p-8 md:p-12 shadow-2xl relative">
+                <div id="wizard-question-container" class="flex flex-col gap-10">
+                    <!-- Dynamic Question Content -->
+                </div>
+                
+                <div class="flex justify-between items-center pt-8 border-t border-slate-800 mt-10">
+                    <button type="button" onclick="prevQuestion()" class="flex items-center gap-2 text-slate-400 hover:text-teal-200 transition-colors font-medium">
+                        <span class="material-symbols-outlined">arrow_back</span><span>Quay lại</span>
+                    </button>
+                    <button type="button" id="btn-next-question" onclick="nextQuestion()" class="bg-teal-700 hover:bg-teal-600 text-teal-50 px-8 py-3 rounded-xl font-bold flex items-center gap-2 transition-all shadow-lg shadow-teal-900/20">
+                        <span>Tiếp tục</span><span class="material-symbols-outlined">arrow_forward</span>
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Decorative Info Card -->
+            <div class="mt-8 grid grid-cols-1 md:grid-cols-2 gap-6 w-full max-w-3xl">
+                <div class="p-5 rounded-2xl bg-slate-900/40 border border-slate-800 flex items-start gap-4">
+                    <div class="bg-teal-900/30 p-2 rounded-xl text-teal-400"><span class="material-symbols-outlined">lock</span></div>
+                    <div><h3 class="text-teal-100 font-bold mb-1 text-sm">Dữ liệu bảo mật</h3><p class="text-slate-500 text-xs leading-relaxed">Nhãn ẩn danh và mã hóa.</p></div>
+                </div>
+                <div class="p-5 rounded-2xl bg-slate-900/40 border border-slate-800 flex items-start gap-4">
+                    <div class="bg-teal-900/30 p-2 rounded-xl text-teal-400"><span class="material-symbols-outlined">medical_services</span></div>
+                    <div><h3 class="text-teal-100 font-bold mb-1 text-sm">Chuẩn y khoa</h3><p class="text-slate-500 text-xs leading-relaxed">Sử dụng công cụ sàng lọc tiêu chuẩn.</p></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- PHASE RESULT -->
+        <div id="phase-result" class="hide w-full max-w-4xl flex-col items-center gap-4">
+            <div class="w-full glass-card rounded-3xl p-8 md:p-12 shadow-2xl relative text-center">
+                <div id="result-icon-container" class="inline-flex rounded-full p-6 mb-6 bg-teal-900/30 text-teal-400">
+                    <span class="material-symbols-outlined text-6xl">monitoring</span>
+                </div>
+                
+                <h3 class="text-sm font-bold tracking-widest text-slate-400 uppercase mb-2">ĐÁNH GIÁ TỪ MÔ HÌNH AI</h3>
+                <h1 id="result-diagnosis" class="text-4xl md:text-5xl font-extrabold text-teal-400 mb-8">Bình thường</h1>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8 text-left">
+                    <div class="bg-slate-900/50 border border-slate-800 p-6 rounded-2xl">
+                        <div class="text-slate-400 text-sm font-medium mb-1 uppercase tracking-wider">Trầm cảm (PHQ-9)</div>
+                        <div class="text-3xl font-bold text-slate-200"><span id="res-phq-score"></span><span class="text-lg text-slate-500">/27</span></div>
+                        <div id="res-phq-level" class="mt-2 text-sm font-semibold text-teal-400">Mức độ: Nhẹ</div>
+                    </div>
+                    <div class="bg-slate-900/50 border border-slate-800 p-6 rounded-2xl">
+                        <div class="text-slate-400 text-sm font-medium mb-1 uppercase tracking-wider">Lo âu (GAD-7)</div>
+                        <div class="text-3xl font-bold text-slate-200"><span id="res-gad-score"></span><span class="text-lg text-slate-500">/21</span></div>
+                        <div id="res-gad-level" class="mt-2 text-sm font-semibold text-teal-400">Mức độ: Nhẹ</div>
+                    </div>
+                </div>
+
+                <div id="res-advice" class="border border-slate-800 bg-slate-900/30 p-6 rounded-2xl text-left text-slate-300 leading-relaxed mb-8">
+                    Phân tích từ 15 chỉ số gốc cho thấy sức khỏe tâm lý của bạn hiện tại khá ổn định. Hệ thống sử dụng thang đo chuyên khoa để tính điểm và đối chiếu máy học tự động.
+                </div>
+
+                <button type="button" onclick="location.reload()" class="bg-slate-800 hover:bg-slate-700 text-slate-200 px-8 py-3 rounded-xl font-bold transition-all border border-slate-700">
+                    Làm lại bài kiểm tra
+                </button>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Màn hình chờ -->
+    <div id="loader-overlay" class="loader-overlay">
+        <div class="spinner"></div>
+        <p class="text-teal-400 font-medium">Hệ thống AI đang phân tích dữ liệu đa chiều...</p>
+    </div>
+
+    <!-- Scripts -->
+    <script src="/static/script.js?v=2"></script>
+</body>
+</html>
